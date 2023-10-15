@@ -17,3 +17,5 @@ dist/*
 
 # obsidian
 data.json
+
+!/dest/
