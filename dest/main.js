@@ -322,8 +322,6 @@ const convertMarkdownLinksToWikiLinks = (md, sourceFile, plugin) => __awaiter(vo
 /* -------------------- LINKS TO RELATIVE/ABSOLUTE/SHORTEST -------------------- */
 // --> Command Function: Active File: Links Format
 const convertLinksFormatInActiveFile = (plugin, finalFormat) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('convertLinksFormatInActiveFile');
-    debugger;
     let mdFile = plugin.app.workspace.getActiveFile();
     if (mdFile.extension === 'md') {
         yield convertLinksInFileToPreferredFormat(mdFile, plugin, finalFormat);
@@ -639,7 +637,6 @@ class LinkConverterPlugin extends obsidian.Plugin {
                 id: 'convert-links-format-in-active-file',
                 name: 'Active File: Links Format',
                 callback: () => {
-                    debugger;
                     let finalFormat = this.settings.finalLinkFormat;
                     convertLinksFormatInActiveFile(this, finalFormat);
                 },
