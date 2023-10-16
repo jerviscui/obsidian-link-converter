@@ -320,6 +320,18 @@ const convertMarkdownLinksToWikiLinks = (md, sourceFile, plugin) => __awaiter(vo
     return newMdText;
 });
 /* -------------------- LINKS TO RELATIVE/ABSOLUTE/SHORTEST -------------------- */
+// --> Command Function: Active File: Links Format
+const convertLinksFormatInActiveFile = (plugin, finalFormat) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('convertLinksFormatInActiveFile');
+    debugger;
+    let mdFile = plugin.app.workspace.getActiveFile();
+    if (mdFile.extension === 'md') {
+        yield convertLinksInFileToPreferredFormat(mdFile, plugin, finalFormat);
+    }
+    else {
+        new obsidian.Notice('Active File is not a Markdown File');
+    }
+});
 const convertLinksInFileToPreferredFormat = (mdFile, plugin, finalFormat) => __awaiter(void 0, void 0, void 0, function* () {
     let fileText = yield plugin.app.vault.read(mdFile);
     let linkMatches = yield getAllLinkMatchesInFile(mdFile, plugin);
@@ -457,12 +469,12 @@ function getRelativeLink(sourceFilePath, linkedFilePath) {
     return outputParts.join('/');
 }
 /* -------------------- TRANSCLUSIONS -------------------- */
-const wikiTransclusionRegex = /\[\[(.*?)#.*?\]\]/;
-const wikiTransclusionFileNameRegex = /(?<=\[\[)(.*)(?=#)/;
-const wikiTransclusionBlockRef = /(?<=#).*?(?=]])/;
-const mdTransclusionRegex = /\[.*?]\((.*?)#.*?\)/;
-const mdTransclusionFileNameRegex = /(?<=\]\()(.*)(?=#)/;
-const mdTransclusionBlockRef = /(?<=#).*?(?=\))/;
+const wikiTransclusionRegex = /\[\[(.*?)#+.*?\]\]/;
+const wikiTransclusionFileNameRegex = /(?<=\[\[)(.*?)(?=#)/;
+const wikiTransclusionBlockRef = /(?<=#)[^#].*?(?=]])/;
+const mdTransclusionRegex = /\[.*?]\((.*?)#+.*?\)/;
+const mdTransclusionFileNameRegex = /(?<=\]\()(.*?)(?=#)/;
+const mdTransclusionBlockRef = /(?<=#)[^#].*?(?=\))/;
 // const wikiTransclusionRegex = /\[\[(.*?)#+.*?\]\]/;
 // const wikiTransclusionFileNameRegex = /(?<=\[\[)(.*?)(?=#)/;
 // const wikiTransclusionBlockRef = /(?<=#)[^#].*?(?=]])/;
@@ -621,6 +633,15 @@ class LinkConverterPlugin extends obsidian.Plugin {
                 name: 'Active File: Links to Wiki',
                 callback: () => {
                     convertLinksInActiveFile(this, 'wiki');
+                },
+            });
+            this.addCommand({
+                id: 'convert-links-format-in-active-file',
+                name: 'Active File: Links Format',
+                callback: () => {
+                    debugger;
+                    let finalFormat = this.settings.finalLinkFormat;
+                    convertLinksFormatInActiveFile(this, finalFormat);
                 },
             });
             this.addCommand({
