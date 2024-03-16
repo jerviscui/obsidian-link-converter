@@ -56,39 +56,39 @@ class LinkConverterSettingsTab extends obsidian.PluginSettingTab {
             .setName('File Context Menu')
             .setDesc("Turn this option off if you don't want single file commands to appear within the file context menu")
             .addToggle((toggle) => {
-            toggle.setValue(this.plugin.settings.contextMenu).onChange((newVal) => {
-                this.plugin.settings.contextMenu = newVal;
-                this.plugin.saveSettings();
-                if (newVal) {
-                    this.plugin.app.workspace.on('file-menu', this.plugin.addFileMenuItems);
-                }
-                else {
-                    this.plugin.app.workspace.off('file-menu', this.plugin.addFileMenuItems);
-                }
+                toggle.setValue(this.plugin.settings.contextMenu).onChange((newVal) => {
+                    this.plugin.settings.contextMenu = newVal;
+                    this.plugin.saveSettings();
+                    if (newVal) {
+                        this.plugin.app.workspace.on('file-menu', this.plugin.addFileMenuItems);
+                    }
+                    else {
+                        this.plugin.app.workspace.off('file-menu', this.plugin.addFileMenuItems);
+                    }
+                });
             });
-        });
         new obsidian.Setting(containerEl)
             .setName('Converted Link Format')
             .setDesc('Select the preferred option for the final link format after the conversion. Plugin will use the preferrence where possible')
             .addDropdown((dropdown) => {
-            dropdown
-                .addOption('not-change', 'Do not change')
-                .addOption('relative-path', 'Relative Path')
-                .addOption('absolute-path', 'Absolute Path')
-                .addOption('shortest-path', 'Shortest Path')
-                .setValue(this.plugin.settings.finalLinkFormat)
-                .onChange((option) => {
-                this.plugin.settings.finalLinkFormat = option;
-                this.plugin.saveSettings();
+                dropdown
+                    .addOption('not-change', 'Do not change')
+                    .addOption('relative-path', 'Relative Path')
+                    .addOption('absolute-path', 'Absolute Path')
+                    .addOption('shortest-path', 'Shortest Path')
+                    .setValue(this.plugin.settings.finalLinkFormat)
+                    .onChange((option) => {
+                        this.plugin.settings.finalLinkFormat = option;
+                        this.plugin.saveSettings();
+                    });
             });
-        });
         new obsidian.Setting(containerEl)
             .setName('Keep mTime (Last Modified Time)')
             .setDesc('Turn on this option if you want plugin to keep the mtime of files same during the link conversion')
             .addToggle((toggle) => toggle.setValue(this.plugin.settings.keepMtime).onChange((value) => {
-            this.plugin.settings.keepMtime = value;
-            this.plugin.saveSettings();
-        }));
+                this.plugin.settings.keepMtime = value;
+                this.plugin.saveSettings();
+            }));
         const coffeeDiv = containerEl.createDiv('coffee');
         coffeeDiv.addClass('oz-coffee-div');
         const coffeeLink = coffeeDiv.createEl('a', { href: 'https://ko-fi.com/L3L356V6Q' });
@@ -320,7 +320,7 @@ const convertMarkdownLinksToWikiLinks = (md, sourceFile, plugin) => __awaiter(vo
     return newMdText;
 });
 /* -------------------- LINKS TO RELATIVE/ABSOLUTE/SHORTEST -------------------- */
-// --> Command Function: Active File: Links Format
+//todo: cuizj --> Command Function: Active File: Links Format
 const convertLinksFormatInActiveFile = (plugin, finalFormat) => __awaiter(void 0, void 0, void 0, function* () {
     let mdFile = plugin.app.workspace.getActiveFile();
     if (mdFile.extension === 'md') {
@@ -467,18 +467,19 @@ function getRelativeLink(sourceFilePath, linkedFilePath) {
     return outputParts.join('/');
 }
 /* -------------------- TRANSCLUSIONS -------------------- */
+//todo: cuizj
 const wikiTransclusionRegex = /\[\[(.*?)#+.*?\]\]/;
 const wikiTransclusionFileNameRegex = /(?<=\[\[)(.*?)(?=#)/;
 const wikiTransclusionBlockRef = /(?<=#)[^#].*?(?=]])/;
 const mdTransclusionRegex = /\[.*?]\((.*?)#+.*?\)/;
 const mdTransclusionFileNameRegex = /(?<=\]\()(.*?)(?=#)/;
 const mdTransclusionBlockRef = /(?<=#)[^#].*?(?=\))/;
-// const wikiTransclusionRegex = /\[\[(.*?)#+.*?\]\]/;
-// const wikiTransclusionFileNameRegex = /(?<=\[\[)(.*?)(?=#)/;
-// const wikiTransclusionBlockRef = /(?<=#)[^#].*?(?=]])/;
-// const mdTransclusionRegex = /\[.*?]\((.*?)#+.*?\)/;
-// const mdTransclusionFileNameRegex = /(?<=\]\()(.*?)(?=#)/;
-// const mdTransclusionBlockRef = /(?<=#)[^#].*?(?=\))/;
+// const wikiTransclusionRegex = /\[\[(.*?)#.*?\]\]/;
+// const wikiTransclusionFileNameRegex = /(?<=\[\[)(.*)(?=#)/;
+// const wikiTransclusionBlockRef = /(?<=#).*?(?=]])/;
+// const mdTransclusionRegex = /\[.*?]\((.*?)#.*?\)/;
+// const mdTransclusionFileNameRegex = /(?<=\]\()(.*)(?=#)/;
+// const mdTransclusionBlockRef = /(?<=#).*?(?=\))/;
 const matchIsWikiTransclusion = (match) => {
     return wikiTransclusionRegex.test(match);
 };
@@ -553,8 +554,8 @@ class FolderSuggestionModal extends obsidian.FuzzySuggestModal {
         return getAllFoldersInVault(this.app);
     }
     onChooseItem(folder, evt) {
-        let infoText = `Are you sure you want to convert all 
-            ${this.finalFormat === 'wiki' ? 'Markdown Links to Wikilinks' : 'Wikilinks to Markdown Links'} 
+        let infoText = `Are you sure you want to convert all
+            ${this.finalFormat === 'wiki' ? 'Markdown Links to Wikilinks' : 'Wikilinks to Markdown Links'}
             under ${folder.name}?`;
         let modal = new ConfirmationModal(this.app, infoText, () => convertLinksUnderFolder(folder, this.plugin, this.finalFormat));
         modal.open();
@@ -641,6 +642,7 @@ class LinkConverterPlugin extends obsidian.Plugin {
                     convertLinksFormatInActiveFile(this, finalFormat);
                 },
             });
+            //todo: cuizj
             this.addCommand({
                 id: 'convert-wikis-to-md-in-vault',
                 name: 'Vault: Links to Markdown',

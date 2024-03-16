@@ -2,7 +2,7 @@
 
 ## 📕 Brief Explanation
 
-This plugin helps you to scan all your links in the vault and convert them to `WikiLinks` or `Markdown` format. The plugin also helps you to convert final path to `relative`, `absolute` or `shortest possible`. You can do link and path conversion at the same time or separately. Adjust the plugin settings and enjoy converting your links in your Obsidian vault! 
+This plugin helps you to scan all your links in the vault and convert them to `WikiLinks` or `Markdown` format. The plugin also helps you to convert final path to `relative`, `absolute` or `shortest possible`. You can do link and path conversion at the same time or separately. Adjust the plugin settings and enjoy converting your links in your Obsidian vault!
 
 ## 📕 Commands
 
@@ -39,3 +39,9 @@ If you are enjoying the plugin then you can support my work and enthusiasm by bu
 <a href='https://ko-fi.com/L3L356V6Q' target='_blank'>
     <img height='48' style='border:0px;height:48px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' />
 </a>
+
+## dev
+
+```
+npm run-script dev
+```
